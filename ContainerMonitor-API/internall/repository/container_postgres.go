@@ -19,17 +19,17 @@ func NewContainerPostgres(db *sqlx.DB) *ContainerPostgres {
 func (r *ContainerPostgres) Create(container model.Container) (int, error) {
 	logrus.Debugf("CreateContainer - IPAddress: %s, PingTime: %s, LastChecked: %s.", container.IPAddress, container.PingTime, container.LastChecked)
 
-	var id int
+	var containerId int
 	createContainerQuery := fmt.Sprintf(`INSERT INTO %s (ip_address, ping_time, last_checked)  
 										VALUES ($1, $2, $3) 
 										RETURNING id`, containersTable)
-	err := r.db.QueryRow(createContainerQuery, container.IPAddress, container.LastChecked).Scan(&id)
+	err := r.db.QueryRow(createContainerQuery, container.IPAddress, container.PingTime, container.LastChecked).Scan(&containerId)
 	if err != nil {
-		logrus.Errorf("Error while creating song: %s", err)
+		logrus.Errorf("Error while creating container: %s", err)
 		return 0, err
 	}
 
-	return id, nil
+	return containerId, nil
 }
 
 func (r *ContainerPostgres) GetAll() ([]model.Container, error) {

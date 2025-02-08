@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   db:
-    build: ./db  
+    build: ./db
     container_name: postgres_container
     restart: always
     environment:
@@ -24,6 +24,17 @@ services:
       - .env  
     ports:
       - "${SERVER_PORT}:8080"
+    volumes:
+      - ./.env:/root/.env  
+  
+  pinger:
+    build: ./ContainerPinger
+    container_name: ping_service
+    restart: always
+    depends_on:
+      - app
+    env_file:
+      - .env
     volumes:
       - ./.env:/root/.env  
 

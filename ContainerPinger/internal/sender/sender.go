@@ -12,11 +12,11 @@ import (
 
 type PingResult struct {
 	IPAddress   string    `json:"ip_address"`
-	PingTime    string    `json:"ping_time"`
+	PingTime    time.Time `json:"ping_time"`
 	LastChecked time.Time `json:"last_checked"`
 }
 
-func SendPingResult(ip string, pingTime string) {
+func SendPingResult(ip string, pingTime time.Time) {
 	result := PingResult{
 		IPAddress:   ip,
 		PingTime:    pingTime,

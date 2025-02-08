@@ -9,15 +9,11 @@ import (
 )
 
 func GetContainerIPs() ([]string, error) {
-	//client.WithHost("tcp://localhost:2375") -- Error getting IP containers: Cannot connect to the Docker daemon at tcp://localhost:2375. Is the docker daemon running?
-	//client.WithHost("npipe:////./pipe/docker_engine")      -- Error getting IP containers: protocol not available
-	//client.WithHost("npipe:////./pipe/dockerDesktopLinuxEngine") -- Error getting IP containers: protocol not available
-	//(client.WithHost("npipe:////./pipe/dockerDesktopWindowsEngine") -- Error getting IP containers: protocol not available
-
-	cli, err := client.NewClientWithOpts(client.WithHost("npipe:////./pipe/dockerDesktopWindowsEngine"))
+	cli, err := client.NewClientWithOpts(client.WithHost("unix:///var/run/docker.sock"))
 	if err != nil {
 		return nil, err
 	}
+	defer cli.Close()
 
 	containers, err := cli.ContainerList(context.Background(), container.ListOptions{All: true})
 	if err != nil {

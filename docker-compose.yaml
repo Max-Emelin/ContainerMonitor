@@ -37,6 +37,7 @@ services:
       - .env
     volumes:
       - ./.env:/root/.env  
+      - /var/run/docker.sock:/var/run/docker.sock
 
 volumes:
   pgdata:

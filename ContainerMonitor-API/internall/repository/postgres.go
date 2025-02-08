@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/jmoiron/sqlx"
+	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
 )
 
@@ -29,7 +30,7 @@ func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
 	logrus.Debug("NewPostgresDB - opening database connection")
 	db, err := sqlx.Open("postgres", connStr)
 	if err != nil {
-		logrus.Error("NewPostgresDB - failed to open database connection", err)
+		logrus.Error("NewPostgresDB - failed to open database connection: ", err)
 		return nil, err
 	}
 

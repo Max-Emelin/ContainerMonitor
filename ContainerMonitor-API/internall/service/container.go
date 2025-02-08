@@ -47,3 +47,13 @@ func (s *ContainerService) GetById(containerId int) (model.Container, error) {
 
 	return container, nil
 }
+
+func (s *ContainerService) CreateOrUpdate(container model.Container) (int, error) {
+	containerId, err := s.repo.CreateOrUpdate(container)
+	if err != nil {
+		logrus.Errorf("Error create/update container: %v", err)
+		return 0, err
+	}
+
+	return containerId, nil
+}

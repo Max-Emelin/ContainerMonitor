@@ -62,3 +62,22 @@ func (r *ContainerPostgres) GetById(containerId int) (model.Container, error) {
 
 	return container, nil
 }
+
+func (r *ContainerPostgres) CreateOrUpdate(container model.Container) (int, error) {
+	logrus.Debugf("Create or update container - IPAddress: %s, PingTime: %s, LastChecked: %s.", container.IPAddress, container.PingTime, container.LastChecked)
+
+	var containerId int
+	createOrUpdateQuery := fmt.Sprintf(`INSERT INTO %s (ip_address, ping_time, last_checked)  
+        							VALUES ($1, $2, $3)
+        							ON CONFLICT (ip_address) DO UPDATE 
+        							SET ping_time = EXCLUDED.ping_time, last_checked = EXCLUDED.last_checked 
+        							RETURNING id`,
+		containersTable)
+	err := r.db.QueryRow(createOrUpdateQuery, container.IPAddress, container.PingTime, container.LastChecked).Scan(&containerId)
+	if err != nil {
+		logrus.Errorf("Error while creating/updating container: %s", err)
+		return 0, err
+	}
+
+	return containerId, nil
+}

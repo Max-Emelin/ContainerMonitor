@@ -8,6 +8,7 @@ import (
 
 type Container interface {
 	Create(container model.Container) (int, error)
+	CreateOrUpdate(container model.Container) (int, error)
 	GetAll() ([]model.Container, error)
 	GetById(containerId int) (model.Container, error)
 }

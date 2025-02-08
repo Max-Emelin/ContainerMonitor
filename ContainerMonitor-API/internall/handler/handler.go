@@ -25,6 +25,7 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		lists := api.Group("containers")
 		{
 			lists.POST("/", h.createContainer)
+			lists.POST("/ping-result", h.savePingResult)
 			lists.GET("/", h.getAllContainers)
 			lists.GET("/:id", h.getContainerById)
 		}

@@ -9,7 +9,6 @@ import (
 )
 
 func (h *Handler) createContainer(c *gin.Context) {
-
 	var input model.Container
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -51,4 +50,22 @@ func (h *Handler) getContainerById(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, container)
+}
+
+func (h *Handler) savePingResult(c *gin.Context) {
+	var input model.Container
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	id, err := h.services.Container.CreateOrUpdate(input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
 }

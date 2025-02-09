@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Table } from "antd";
+import ContainerTable from './components/ContainerTable'
 
 const App = () => {
   const [data, setData] = useState([]);
@@ -8,16 +8,20 @@ const App = () => {
 
   const fetchPingData = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/containers/", {
+      const SERVER_PORT = process.env.REACT_APP_SERVER_PORT;  
+      const API_URL = `http://localhost:${SERVER_PORT}/api/containers/`;
+      const response = await fetch(API_URL, {
         method: "GET",
         credentials: "include",  
         headers: {
-        "Content-Type": "application/json"
+          "Content-Type": "application/json"
         }
-      })
+      });
+
       if (!response.ok) {
-        throw new Error("Error featching data.");
+        throw new Error("Error fetching data.");
       }
+
       const result = await response.json();
       setData(result);
       setError(null);
@@ -34,16 +38,13 @@ const App = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const columns = [
-    { title: "IP Адрес", dataIndex: "ip_address", key: "ip_address" },
-    { title: "Время пинга", dataIndex: "ping_time", key: "ping_time" },
-    { title: "Дата последнего успеха", dataIndex: "last_checked", key: "last_checked" },
-  ];
-
-  if (loading) return <p>Загрузка данных...</p>;
-  if (error) return <p>Ошибка: {error}</p>;
-
-  return <Table dataSource={data} columns={columns} rowKey="ip" />;
+  
+  return (
+    <div>
+      <h1 style={{ textAlign: "center" }}>Список контейнеров</h1>
+      <ContainerTable data={data} loading={loading} error={error} />
+    </div>
+  );
 };
 
 export default App;

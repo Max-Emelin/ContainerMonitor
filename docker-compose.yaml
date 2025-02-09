@@ -50,6 +50,8 @@ services:
       - app   
     networks:
       - app-network
+    environment:
+      - REACT_APP_SERVER_PORT=${SERVER_PORT} 
 
 volumes:
   pgdata:

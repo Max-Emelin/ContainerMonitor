@@ -12,4 +12,7 @@ RUN npm run build
 
 EXPOSE 80
 
+ARG SERVER_PORT
+ENV REACT_APP_SERVER_PORT=$SERVER_PORT
+
 CMD ["npm", "start"]

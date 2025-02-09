@@ -3,6 +3,7 @@ package sender
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"time"
@@ -24,7 +25,9 @@ func SendPingResult(ip string, pingTime time.Time) {
 	}
 
 	jsonData, _ := json.Marshal(result)
-	resp, err := http.Post(os.Getenv("BACKEND_URL"), "application/json", bytes.NewBuffer(jsonData))
+	serverPort := os.Getenv("SERVER_PORT")
+	backendURL := fmt.Sprintf("http://app:%s/api/containers/ping-result", serverPort)
+	resp, err := http.Post(backendURL, "application/json", bytes.NewBuffer(jsonData))
 	if err != nil {
 		logrus.Errorf("Error sending data to API %s", err)
 		return

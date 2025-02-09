@@ -11,7 +11,6 @@
 2. **Frontend-сервис**:
    - –азработан на JavaScript с использованием библиотеки React.
    - ќтображает таблицу с данными о контейнерах: IP-адрес, врем€ последнего пинга, дата последней успешной попытки.
-   - ƒл€ отображени€ используетс€ Bootstrap или аналогичные библиотеки.
 
 3. **Ѕаза данных PostgreSQL**:
    - ’ранит информацию о контейнерах и результатах их пинга (IP-адрес, врем€ пинга, дата последнего успешного пинга).
@@ -27,7 +26,7 @@
 1. ** лонировать репозиторий**:
 
     ```bash
-    git clone https://github.com/username/container-monitoring.git
+    git clone https://github.com/Max-Emelin/ContainerMonitor.git
     cd container-monitoring
     ```
 

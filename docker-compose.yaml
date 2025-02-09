@@ -39,5 +39,21 @@ services:
       - ./.env:/root/.env  
       - /var/run/docker.sock:/var/run/docker.sock
 
+  frontend:
+    build:
+      context: ./container-vision
+    container_name: react_frontend
+    restart: always
+    ports:
+      - "3000:3000" 
+    depends_on:
+      - app   
+    networks:
+      - app-network
+
 volumes:
   pgdata:
+
+networks:
+  app-network:
+    driver: bridge
